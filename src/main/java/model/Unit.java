@@ -21,7 +21,7 @@ import java.util.Objects;
 @Data
 @Entity(name = "Unit")
 @Table(name = "unit")
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="unit_id")
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Unit {
     @Id
     @SequenceGenerator(name = "my_seq", sequenceName = "seq1", allocationSize = 1)

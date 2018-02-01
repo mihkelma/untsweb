@@ -30,12 +30,12 @@ public class UserController {
         return userDao.getAllUsers();
     }
 
-//    @GetMapping("users/units")
-//    @PreAuthorize("#username == authentication.name")
-//    public List<Unit> getAllUserUnits(Authentication auth) {
-//
-//        return userDao.getAllUserUnits();
-//    }
+    @GetMapping("users/units")
+    @PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
+    public List<Unit> getAllUserUnits(Authentication auth) {
+        System.out.println(auth.getName());
+        return userDao.getAllUserUnits(auth.getName());
+    }
 
     @PostMapping("users")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -43,7 +43,7 @@ public class UserController {
         User newUser = new User();
         System.out.println(user.toString());
         newUser.setUsername(user.getUsername());
-        newUser.setUsername(user.getName());
+        newUser.setName(user.getName());
         newUser.setEnabled(user.getEnabled());
         newUser.setPassword(user.getPassword());
         userDao.saveUser(newUser);

@@ -16,19 +16,24 @@ public class UserJpaDao implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-        return em.createQuery("SELECT u FROM User u JOIN u.units", User.class)
+
+        List<User> tmp;
+        tmp = em.createQuery("SELECT u FROM User u JOIN u.units", User.class)
                 .getResultList();
+        System.out.println(tmp.toString());
+        return tmp;
     }
 
     @Override
-    public List<Unit> getAllUserUnits(User user) {
-        return em.createQuery("SELECT u FROM User u ", Unit.class)
+    public List<Unit> getAllUserUnits(String username) {
+        return em.createQuery("SELECT u.units FROM User u JOIN u.units WHERE u.users.username = :username", Unit.class)
+                .setParameter("username", username)
                 .getResultList();
     }
 
     @Override
     public User findByUsername(String username) {
-        return em.createQuery("SELECT p FROM User p WHERE p.username = :username", User.class)
+        return em.createQuery("SELECT p FROM User p JOIN p.units WHERE p.username = :username", User.class)
                 .setParameter("username", username)
                 .getSingleResult();
     }

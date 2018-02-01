@@ -1,10 +1,12 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import util.Util;
 
 import javax.persistence.*;
 import java.util.*;
@@ -16,15 +18,18 @@ import java.util.*;
 @Table(name = "USERS")
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="username")
 public class User {
+
     @Id
     private String username;
     private String password;
     private Boolean enabled;
     private String name;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    //@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "userunit", joinColumns = @JoinColumn(name = "user_username"),
             inverseJoinColumns = @JoinColumn(name = "unit_id"))
+    //@JsonIgnore
     private List<Unit> units = new ArrayList<>();
 
     public void addUnit(Unit unit) {
@@ -56,6 +61,7 @@ public class User {
                 ", first_name='" + name + '\'' +
                 ", enabled='" + enabled + '\'' +
                 ", password='" + password + '\'' +
-                '}';
+                ", units= [" +
+                " ] }";
     }
 }
