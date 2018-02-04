@@ -19,8 +19,8 @@ public class UserController {
     @GetMapping("users/{username}")
     @PreAuthorize("#username == authentication.name || hasRole('ROLE_ADMIN')")
     public User getUserByName(@PathVariable String username, Authentication auth) {
-        System.out.println(username);
-        System.out.println(auth.getAuthorities());
+        //System.out.println(username);
+        //System.out.println(auth.getAuthorities());
         return userDao.findByUsername(username);
     }
 
@@ -30,22 +30,21 @@ public class UserController {
         return userDao.getAllUsers();
     }
 
-    @GetMapping("users/units")
-    @PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
-    public List<Unit> getAllUserUnits(Authentication auth) {
-        System.out.println(auth.getName());
-        return userDao.getAllUserUnits(auth.getName());
-    }
-
     @PostMapping("users")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void saveUser(@RequestBody @Valid User user) {
         User newUser = new User();
-        System.out.println(user.toString());
         newUser.setUsername(user.getUsername());
         newUser.setName(user.getName());
         newUser.setEnabled(user.getEnabled());
         newUser.setPassword(user.getPassword());
         userDao.saveUser(newUser);
+    }
+
+    //@DeleteMapping("users/{username}")
+    @RequestMapping(value = "users/{username}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void deleteUser(@PathVariable String username) {
+        userDao.deleteUser(username);
     }
 }

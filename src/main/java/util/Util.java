@@ -22,13 +22,13 @@ public class Util {
     }
 
     public static String listToString(List<?> list) {
-        String result = "+";
-        result += "{";
-        for (int i = 0; i < list.size(); i++) {
-            System.out.println(list.get(i));
-            result += " " + list.get(i);
+        String i;
+        i = "{";
+        for (Object obj : list) {
+            i += obj;
+            System.out.println(obj);
         }
-        result += "}";
-        return result;
+        i += "}";
+        return i;
     }
 }

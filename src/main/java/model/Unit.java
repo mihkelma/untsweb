@@ -1,8 +1,6 @@
 package model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,14 +22,15 @@ import java.util.Objects;
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Unit {
     @Id
-    @SequenceGenerator(name = "my_seq", sequenceName = "seq1", allocationSize = 1)
+    @SequenceGenerator(name = "my_seq", sequenceName = "seq2", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_seq")
     private Long id;
     private String name;
     private Double size;
     private Double price;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "units")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "units")
+    //@JsonManagedReference
     @JsonIgnore
     private List<User> users = new ArrayList<>();
 
@@ -46,5 +45,15 @@ public class Unit {
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    @Override
+    public String toString() {
+        return "Unit{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", size='" + size + '\'' +
+                ", price='" + price + '\'' +
+                " ] }";
     }
 }

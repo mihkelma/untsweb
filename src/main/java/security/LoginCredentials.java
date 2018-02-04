@@ -7,7 +7,7 @@ public class LoginCredentials {
     @Override
     public String toString() {
         return "LoginCredentials{" +
-                "userName='" + userName + '\'' +
+                "username='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }

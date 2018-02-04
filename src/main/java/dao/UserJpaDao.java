@@ -4,6 +4,8 @@ import model.Unit;
 import model.User;
 import org.springframework.stereotype.Repository;
 
+//import org.apache.logging.log4j.core.Logger;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -18,22 +20,16 @@ public class UserJpaDao implements UserDao {
     public List<User> getAllUsers() {
 
         List<User> tmp;
-        tmp = em.createQuery("SELECT u FROM User u JOIN u.units", User.class)
-                .getResultList();
-        System.out.println(tmp.toString());
+        tmp = em.createQuery("SELECT u FROM User u", User.class).getResultList();
+        //tmp = em.createQuery("SELECT u FROM User u LEFT JOIN u.units", User.class).getResultList();
+        //System.out.println("JPA users:" +tmp.toString());
+        //System.out.println("JPA users:" +tmp2.toString());
         return tmp;
     }
 
     @Override
-    public List<Unit> getAllUserUnits(String username) {
-        return em.createQuery("SELECT u.units FROM User u JOIN u.units WHERE u.users.username = :username", Unit.class)
-                .setParameter("username", username)
-                .getResultList();
-    }
-
-    @Override
     public User findByUsername(String username) {
-        return em.createQuery("SELECT p FROM User p JOIN p.units WHERE p.username = :username", User.class)
+        return em.createQuery("SELECT p FROM User p WHERE lower(p.username)  = lower(:username)", User.class)
                 .setParameter("username", username)
                 .getSingleResult();
     }
@@ -42,9 +38,19 @@ public class UserJpaDao implements UserDao {
     @Transactional
     public void saveUser(User user) {
         if (user.getUsername() == null) {
+            //System.out.println(user.toString());
             em.persist(user);
         } else {
+            //System.out.println(user.toString());
             em.merge(user);
         }
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(String username) {
+        em.createQuery("delete from User p where lower(p.username) = lower(:username)")
+                .setParameter("username", username)
+                .executeUpdate();
     }
 }
