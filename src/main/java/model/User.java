@@ -13,8 +13,7 @@ import java.util.*;
 @AllArgsConstructor
 @Data
 @Entity(name="User")
-@Table(name = "USERS")
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="username")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -23,28 +22,25 @@ public class User {
     private Boolean enabled;
     private String name;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    //@ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "userunit", joinColumns = @JoinColumn(name = "user_username"),
-            inverseJoinColumns = @JoinColumn(name = "unit_id"))
-    @JsonIgnore
-    private List<Unit> units = new ArrayList<>();
 
-    public void addUnit(Unit unit) {
-        units.add(unit);
-        unit.getUsers().add(this);
-    }
-
-    public void removeUnit(Unit unit) {
-        units.remove(unit);
-        unit.getUsers().remove(this);
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Unit2> units2 = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         return username != null && username.equals(((User) o).username);
+    }
+
+    public void addUnit2(Unit2 unit2) {
+        units2.add(unit2);
+        unit2.setUser(this);
+    }
+
+    public void removeUnit2(Unit2 unit2) {
+        units2.remove(unit2);
+        unit2.setUser(null);
     }
 
     @Override
@@ -59,6 +55,6 @@ public class User {
                 ", first_name='" + name + '\'' +
                 ", enabled='" + enabled + '\'' +
                 ", password='" + password + '\'' +
-                ", units= [ ] }";
+                ", units= [" + units2.toString() +" ] }";
     }
 }

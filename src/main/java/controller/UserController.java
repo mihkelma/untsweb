@@ -1,7 +1,6 @@
 package controller;
 
 import dao.UserDao;
-import model.Unit;
 import model.User;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
