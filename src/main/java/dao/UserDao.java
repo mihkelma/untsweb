@@ -13,10 +13,4 @@ public interface UserDao {
 
     void deleteUser(String username);
 
-    // Unit2 example
-    User getAllUserUnits2(String username);
-
-    void saveUserUnit2(User user);
-
-    void deleteUserUnit2(Long id);
 }

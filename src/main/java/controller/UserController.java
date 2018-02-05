@@ -34,7 +34,10 @@ public class UserController {
     public void saveUser(@RequestBody @Valid User user) {
         User newUser = new User();
         newUser.setUsername(user.getUsername());
-        newUser.setName(user.getName());
+        newUser.setFirstName(user.getFirstName());
+        newUser.setLastName(user.getLastName());
+        newUser.setPhone(user.getPhone());
+        newUser.setEmail(user.getEmail());
         newUser.setEnabled(user.getEnabled());
         newUser.setPassword(user.getPassword());
         userDao.saveUser(newUser);
