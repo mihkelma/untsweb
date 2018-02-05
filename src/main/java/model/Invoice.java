@@ -23,6 +23,20 @@ public class Invoice {
     private Long id;
     private Date dateCreated;
     private Date dateDue;
+    private String ownerName;
+    private String ownerAddress;
+    private String ownerPhone;
+    private String ownerEmail;
+    private String ownerIBAN;
+    private String ownerBank;
+    private String ownerNotes;
+    private Boolean isVATRequired;
+    private String ownerSalesName;
+    private String customerEmail;
+    private String customerName;
+    private String customerAddress;
+    private String customerPhone;
+    private String customerReference;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contract_id")

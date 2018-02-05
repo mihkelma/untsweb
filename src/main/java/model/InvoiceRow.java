@@ -3,6 +3,7 @@ package model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class InvoiceRow {
     private String description;
     private Double quantity;
     private Double unitPrice;
+    @Getter
     private Double sumPrice;
     private Double taxAmount;
 
@@ -29,4 +31,8 @@ public class InvoiceRow {
     @JoinColumn(name = "invoice_id")
     @JsonIgnore
     private Invoice invoice;
+
+    public Double getSumPrice() {
+        return quantity*unitPrice;
+    }
 }
