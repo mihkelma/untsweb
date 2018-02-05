@@ -23,6 +23,7 @@ public class Customer {
     private String customerPhone;
     private String customerReference;
 
+    //TODO: add, merge, remove Contract
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Contract> contracts = new ArrayList<>();
 }

@@ -43,6 +43,7 @@ public class Invoice {
     @JsonIgnore
     private Contract contract;
 
+    //TODO: add, merge, remove invoiceRow
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<InvoiceRow> invoiceRows = new ArrayList<InvoiceRow>();
 

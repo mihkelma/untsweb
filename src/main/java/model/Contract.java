@@ -40,12 +40,15 @@ public class Contract {
     @JsonIgnore
     private Unit unit;
 
+    //TODO: add, merge, remove Contract
     @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Invoice> invoices = new ArrayList<>();
 
+    //TODO: add, merge, remove Customer
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
 
 
 }
