@@ -25,6 +25,7 @@ public class Contract {
     private Boolean isActive;
     private Date closed;
     private Date dueDate;
+    private Integer invoiceDate;
     private String ownerName;
     private String ownerAddress;
     private String ownerPhone;
@@ -34,19 +35,22 @@ public class Contract {
     private String ownerNotes;
     private Boolean isVATRequired;
     private String ownerSalesName;
+    private String ownerRef;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "unit_id")
-    @JsonIgnore
+    //@JsonIgnore
     private Unit unit;
 
     //TODO: add, merge, remove Contract
     @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Invoice> invoices = new ArrayList<>();
 
     //TODO: add, merge, remove Customer
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id")
+    //@JsonIgnore
     private Customer customer;
 
 

@@ -37,6 +37,7 @@ public class Invoice {
     private String customerAddress;
     private String customerPhone;
     private String customerReference;
+    private String ownerRef;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contract_id")

@@ -35,7 +35,6 @@ public class User {
     }
 
     public void addUnit2(Unit unit) {
-
         units2.add(unit);
         unit.setUser(this);
     }

@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,19 +23,23 @@ public class Unit {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_seq")
     private Long id;
     private String name;
+    private String address;
     private Double size;
     private Double price;
+    private Date buildYear;
+    private Integer status;
+    private Integer floor;
+    private Integer rooms;
+    private String type;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "username")
     @JsonIgnore
     private User user;
 
-    //TODO: how to make many to many with unit -< unit_contract >- contract so,
-    // that unit_contract has status field which used to get only active contracts
     @OneToMany(mappedBy = "unit", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Contract> contracts = new ArrayList<>();
+    private List<Contract> contracts = new ArrayList<Contract>();
     //TODO: how to add, merge and remove if using OO principles (on JPA side)
 
     @Override

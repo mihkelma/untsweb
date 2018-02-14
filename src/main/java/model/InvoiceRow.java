@@ -23,9 +23,10 @@ public class InvoiceRow {
     private String description;
     private Double quantity;
     private Double unitPrice;
-    @Getter
+    @Transient
     private Double sumPrice;
     private Double taxAmount;
+    private String ownerRef;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "invoice_id")
