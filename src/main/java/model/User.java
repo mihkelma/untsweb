@@ -1,5 +1,6 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,7 +26,8 @@ public class User {
 
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Unit> units2 = new ArrayList<>();
+    @JsonIgnore
+    private List<Unit> units = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
@@ -34,13 +36,13 @@ public class User {
         return username != null && username.equals(((User) o).username);
     }
 
-    public void addUnit2(Unit unit) {
-        units2.add(unit);
+    public void addUnit(Unit unit) {
+        units.add(unit);
         unit.setUser(this);
     }
 
-    public void removeUnit2(Unit unit) {
-        units2.remove(unit);
+    public void removeUnit(Unit unit) {
+        units.remove(unit);
         unit.setUser(null);
     }
 
@@ -52,10 +54,10 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "userName='" + username + '\'' +
+                "userame='" + username + '\'' +
                 ", name='" + firstName +" "+ lastName + '\'' +
                 ", enabled='" + enabled + '\'' +
-                ", password='" + password + '\'' +
-                ", units= [" + units2.toString() +" ] }";
+                ", units= [" + units.toString() +" ] }";
     }
+
 }

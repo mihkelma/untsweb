@@ -117,7 +117,7 @@ INSERT INTO AUTHORITIES (USERNAME, AUTHORITY) VALUES ('user', 'ROLE_USER');
 INSERT INTO AUTHORITIES (USERNAME, AUTHORITY) VALUES ('admin', 'ROLE_ADMIN');
 
 INSERT INTO UNIT VALUES (NEXT VALUE FOR seq1, 'Tehnika 21', 'Address', 69.0, 570.00, NOW(), 1, 5, 3, 'Korter' ,'user');
-INSERT INTO UNIT VALUES (NEXT VALUE FOR seq1, 'Tehnika 22', 'Address', 39.0, 400.00, NOW(), 1, 2, 2, 'Korter' ,'user');
+INSERT INTO UNIT VALUES (NEXT VALUE FOR seq1, 'Tehnika 22', 'Address', 39.0, 400.00, NOW(), 0, 2, 2, 'Korter' ,'user');
 INSERT INTO UNIT VALUES (NEXT VALUE FOR seq1, 'Tehnika 23', 'Address', 17.0, 60.00, NOW(), 1, 1, 1, 'Garaaz' ,'user');
 INSERT INTO UNIT VALUES (NEXT VALUE FOR seq1, 'Tehnika 24', 'Address', 109.0, 870.00, NOW(), 1, 3, 4, 'Korter' ,'admin');
 INSERT INTO UNIT VALUES (NEXT VALUE FOR seq1, 'Tehnika 25', 'Address', 48.2, 295.00, NOW(), 1, 1, 2, 'Korter' ,'admin');

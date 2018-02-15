@@ -18,24 +18,40 @@ public class UnitJpaDao implements UnitDao {
     @PersistenceContext
     private EntityManager em;
 
+//    @Override
+//    public User getAllUserUnits(String username) {
+//        User tmp;
+//        tmp = em.createQuery("SELECT u FROM User u LEFT JOIN FETCH u.units2 WHERE lower(u.username) = lower(:username)", User.class)
+//                .setParameter("username", username)
+//                .getSingleResult();
+//        //System.out.println(tmp.toString());
+//        return tmp;
+//    }
+
     @Override
-    public User getAllUserUnits(String username) {
-        User tmp;
-        tmp = em.createQuery("SELECT u FROM User u LEFT JOIN FETCH u.units2 WHERE lower(u.username) = lower(:username)", User.class)
+    public List<Unit> getAllActiveUserUnits(String username) {
+        List<Unit> tmp = null;
+        try {
+            tmp = em.createQuery("SELECT u FROM Unit u LEFT JOIN FETCH u.user " +
+                "WHERE lower(u.user.username) = lower(:username) AND u.status = 1", Unit.class)
                 .setParameter("username", username)
-                .getSingleResult();
+                .getResultList();
+        } catch (NoResultException nre) {}
+        if (tmp == null) {
+            return null;
+        }
         //System.out.println(tmp.toString());
         return tmp;
     }
 
     @Override
-    public List<Unit> getAllUserUnits2(String username) {
+    public List<Unit> getAllInactiveUserUnits(String username) {
         List<Unit> tmp = null;
         try {
             tmp = em.createQuery("SELECT u FROM Unit u LEFT JOIN FETCH u.user " +
-                "WHERE lower(u.user.username) = lower(:username)", Unit.class)
-                .setParameter("username", username)
-                .getResultList();
+                    "WHERE lower(u.user.username) = lower(:username) AND u.status = 0", Unit.class)
+                    .setParameter("username", username)
+                    .getResultList();
         } catch (NoResultException nre) {}
         if (tmp == null) {
             return null;
@@ -50,7 +66,8 @@ public class UnitJpaDao implements UnitDao {
         Unit tmp = null;
 
         try {
-            tmp = (Unit) em.createNativeQuery("SELECT un.* FROM unit un WHERE un.id = :id AND un.username = :username", Unit.class).setParameter("id", id)
+            tmp = (Unit) em.createNativeQuery("SELECT un.* FROM unit un WHERE un.id = :id " +
+                    "AND un.username = :username", Unit.class).setParameter("id", id)
                     .setParameter("username", username)
                     .getSingleResult();
         } catch (NoResultException e) {}
@@ -67,18 +84,26 @@ public class UnitJpaDao implements UnitDao {
         if(unit.getId()!= null) {
             //TODO: check, if this unit belongs to this user
             //TODO: how to update using OO principles
-            em.createNativeQuery("UPDATE UNIT SET name= :name, size= :size, " +
-                    "price = :price, username= :username WHERE id= :id")
-                    .setParameter("name", unit.getName())
-                    .setParameter("size", unit.getSize())
-                    .setParameter("price", unit.getPrice())
-                    .setParameter("username", name).setParameter("id", unit.getId())
-                    .executeUpdate();
-        } else {
+//            em.createNativeQuery("UPDATE UNIT SET name= :name, size= :size, " +
+//                    "price = :price, username= :username WHERE id= :id")
+//                    .setParameter("name", unit.getName())
+//                    .setParameter("size", unit.getSize())
+//                    .setParameter("price", unit.getPrice())
+//                    .setParameter("username", name).setParameter("id", unit.getId())
+//                    .executeUpdate();
+            System.out.println("Merging unit");
             User user = em.find(User.class, name);
-            Hibernate.initialize(user.getUnits2());
-            user.addUnit2(unit);
-            em.persist(user);
+            unit.setUser(user);
+            em.merge(unit);
+        } else {
+//            User user = em.find(User.class, name);
+//            Hibernate.initialize(user.getUnits());
+//            user.addUnit(unit);
+//            em.persist(user);
+            System.out.println("Persisting unit");
+            User user = em.find(User.class, name);
+            unit.setUser(user);
+            em.persist(unit);
         }
     }
 
@@ -86,15 +111,12 @@ public class UnitJpaDao implements UnitDao {
     @Transactional
     public void deleteUserUnit(Long id, String username) {
         //TODO: check, if this unit belongs to this user and don't delete, but change status to 0 (archive)
-        //Unit unit = em.find(Unit.class, id);
-
-        int a = em.createNativeQuery("UPDATE UNIT SET status =0 WHERE id = :id AND username = :username")
-                .setParameter("id", id)
-                .setParameter("username", username)
-                .executeUpdate();
-        if (a == 0) {
-            System.out.println("Removing of user (id:"+ id +") failed");
-        }
+        Unit unit = em.find(Unit.class, id);
+        User user = em.find(User.class, username);
+        unit.setStatus(0);
+        unit.setUser(user);
+        System.out.println("Removing of user (id:"+ id +") failed");
+        em.merge(unit);
     }
 
     @Override
