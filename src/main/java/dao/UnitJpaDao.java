@@ -91,7 +91,7 @@ public class UnitJpaDao implements UnitDao {
 //                    .setParameter("price", unit.getPrice())
 //                    .setParameter("username", name).setParameter("id", unit.getId())
 //                    .executeUpdate();
-            System.out.println("Merging unit");
+            //System.out.println("Merging unit");
             User user = em.find(User.class, name);
             unit.setUser(user);
             em.merge(unit);
@@ -100,7 +100,7 @@ public class UnitJpaDao implements UnitDao {
 //            Hibernate.initialize(user.getUnits());
 //            user.addUnit(unit);
 //            em.persist(user);
-            System.out.println("Persisting unit");
+            //System.out.println("Persisting unit");
             User user = em.find(User.class, name);
             unit.setUser(user);
             em.persist(unit);
@@ -122,13 +122,13 @@ public class UnitJpaDao implements UnitDao {
     @Override
     public List<Contract> getUnitContracts(Long id, String username) {
         List<Contract> contracts;
-        //contracts = em.createQuery("SELECT u.contracts FROM Unit u LEFT JOIN FETCH u.contracts WHERE u.id = :id", Contract.class)
-        contracts = em.createQuery("SELECT c FROM Contract c WHERE c.unit.id = :id" +
-                " AND c.ownerRef = :username", Contract.class)
+        contracts = em.createQuery("SELECT c FROM Contract c LEFT JOIN FETCH c.customer cu" +
+                "LEFT JOIN FETCH c.user WHERE c.unit.id = :id" +
+                " AND lower(c.user.username) = lower(:username) " +
+                "AND c.isActive = TRUE", Contract.class)
                 .setParameter("id",id)
                 .setParameter("username", username)
                 .getResultList();
-//        contracts = em.createNativeQuery("SELECT c.* from contract c JOIN unit u ON c.unit_id = u.id WHERE c.unit_id = :id", Contract.class).setParameter("id", id).getResultList();
         if (contracts.isEmpty()) return null;
         return contracts;
     }

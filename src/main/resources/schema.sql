@@ -46,7 +46,9 @@ CREATE TABLE CUSTOMER (
   customerAddress VARCHAR(255),
   customerPhone VARCHAR(50) NOT NULL,
   customerReference VARCHAR(100),
-  ownerRef VARCHAR(255) NOT NULL
+  username VARCHAR(255) NOT NULL,
+  FOREIGN KEY (username) REFERENCES USERS
+    ON DELETE CASCADE
 );
 
 CREATE TABLE CONTRACT (
@@ -65,12 +67,14 @@ CREATE TABLE CONTRACT (
   ownerNotes VARCHAR(120),
   ownerSalesName VARCHAR(100),
   isVATRequired BOOLEAN,
-  ownerRef VARCHAR(255) NOT NULL,
   unit_id BIGINT NOT NULL,
-  customer_id VARCHAR(120) NOT NULL,
-  FOREIGN KEY (unit_id) REFERENCES UNIT(id)
+  customeremail VARCHAR(120) NOT NULL,
+  username VARCHAR(255) NOT NULL,
+  FOREIGN KEY (customeremail) REFERENCES CUSTOMER(customerEmail)
     ON DELETE CASCADE,
-  FOREIGN KEY (customer_id) REFERENCES CUSTOMER(customerEmail)
+  FOREIGN KEY (username) REFERENCES USERS
+    ON DELETE CASCADE,
+  FOREIGN KEY (unit_id) REFERENCES UNIT(id)
     ON DELETE CASCADE
 );
 
@@ -78,6 +82,7 @@ CREATE TABLE INVOICE (
   id       BIGINT NOT NULL PRIMARY KEY,
   dateCreated  DATE,
   dateDue DATE,
+  status INTEGER,
   ownerName VARCHAR(100) NOT NULL,
   ownerAddress VARCHAR(255) NOT NULL,
   ownerPhone VARCHAR(50) NOT NULL,
@@ -92,8 +97,10 @@ CREATE TABLE INVOICE (
   customerAddress VARCHAR(255),
   customerPhone VARCHAR(50) NOT NULL,
   customerReference VARCHAR(100),
-  ownerRef VARCHAR(255) NOT NULL,
   contract_id BIGINT NOT NULL,
+  username VARCHAR(255) NOT NULL,
+  FOREIGN KEY (username) REFERENCES USERS
+    ON DELETE CASCADE,
   FOREIGN KEY (contract_id) REFERENCES CONTRACT
     ON DELETE CASCADE
 );
@@ -107,12 +114,15 @@ CREATE TABLE INVOICEROW (
   taxamount REAL,
   ownerRef VARCHAR(255) NOT NULL,
   invoice_id BIGINT NOT NULL,
+  username VARCHAR(255) NOT NULL,
+  FOREIGN KEY (username) REFERENCES USERS
+    ON DELETE CASCADE,
   FOREIGN KEY (invoice_id) REFERENCES INVOICE
     ON DELETE CASCADE
 );
 
-INSERT INTO users (USERNAME, PASSWORD, ENABLED, EMAIL) VALUES ('user', '$2a$10$FgFxjdC6w8l.89PcTuCUWeAGpDiOA.XKv.yOm8l5TWjPDvEUurkwK', true, 'u@u.ee');
-INSERT INTO users (USERNAME, PASSWORD, ENABLED, EMAIL) VALUES ('admin', '$2a$10$UxZKMrq.6ccx4gYYWkY1me4v8T6xE28Ch0IoQfFTWmjnZEG3agt3i', true, 'a@a.ee');
+INSERT INTO USERS (USERNAME, PASSWORD, ENABLED, EMAIL) VALUES ('user', '$2a$10$FgFxjdC6w8l.89PcTuCUWeAGpDiOA.XKv.yOm8l5TWjPDvEUurkwK', true, 'u@u.ee');
+INSERT INTO USERS (USERNAME, PASSWORD, ENABLED, EMAIL) VALUES ('admin', '$2a$10$UxZKMrq.6ccx4gYYWkY1me4v8T6xE28Ch0IoQfFTWmjnZEG3agt3i', true, 'a@a.ee');
 INSERT INTO AUTHORITIES (USERNAME, AUTHORITY) VALUES ('user', 'ROLE_USER');
 INSERT INTO AUTHORITIES (USERNAME, AUTHORITY) VALUES ('admin', 'ROLE_ADMIN');
 
@@ -123,8 +133,11 @@ INSERT INTO UNIT VALUES (NEXT VALUE FOR seq1, 'Tehnika 24', 'Address', 109.0, 87
 INSERT INTO UNIT VALUES (NEXT VALUE FOR seq1, 'Tehnika 25', 'Address', 48.2, 295.00, NOW(), 1, 1, 2, 'Korter' ,'admin');
 
 
-INSERT INTO CUSTOMER VALUES ('c@c.cc','Juhan', 'Coopa 17', '1111','','user');
-INSERT INTO CONTRACT VALUES (NEXT VALUE FOR seq2, now(), TRUE, NULL, ADD_MONTHS ( NOW() , 2), 5, 'Kalle','Tehnika 211-1',
-                                                      '3725500333','@a','1','AS LHV Pank','','Kalle', FALSE,'user',1,'c@c.cc');
+INSERT INTO CUSTOMER VALUES ('u@u.uu','Juhan', 'Coopa 17', '1111','','user');
+INSERT INTO CUSTOMER VALUES ('p@p.pp','Kalle', 'Coopa 18', '1234','','user');
+
+
+INSERT INTO CONTRACT VALUES (NEXT VALUE FOR seq2, now(), TRUE, NULL, ADD_MONTHS ( NOW() , 2), 5, 'Kalle', 'Tehnika 211-1', '3725500333','@a','1','AS LHV Pank','','Kalle', FALSE,1, 'u@u.uu', 'user');
+INSERT INTO CONTRACT VALUES (NEXT VALUE FOR seq2, ADD_MONTHS ( NOW() , -4), FALSE, NOW(), NOW(), 15, 'Kalle', 'Tehnika 211-1','3725500333','@a','1','AS LHV Pank','','Kalle', FALSE,1, 'p@p.pp', 'user');
 
 --INSERT INTO CONTRACT VALUES (NEXTVAL ('seq2'), now(), TRUE, NULL, NOW(), 5, 'Kalle','Tehnika 211-1','3725500333','@a','1','AS LHV Pank','','Kalle', FALSE,'user',7,'c@c.cc');

@@ -40,7 +40,6 @@ public class Unit {
     @OneToMany(mappedBy = "unit", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Contract> contracts = new ArrayList<Contract>();
-    //TODO: how to add, merge and remove if using OO principles (on JPA side)
 
     @Override
     public boolean equals(Object o) {

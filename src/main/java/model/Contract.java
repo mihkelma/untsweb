@@ -1,6 +1,8 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +17,7 @@ import java.util.List;
 @Data
 @Entity(name = "Contract")
 @Table(name = "contract")
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Contract {
 
     @Id
@@ -35,24 +38,35 @@ public class Contract {
     private String ownerNotes;
     private Boolean isVATRequired;
     private String ownerSalesName;
-    private String ownerRef;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "unit_id")
-    //@JsonIgnore
+    @JsonIgnore
     private Unit unit;
 
-    //TODO: add, merge, remove Contract
+    //TODO: add, merge, remove Invoices
     @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Invoice> invoices = new ArrayList<>();
 
-    //TODO: add, merge, remove Customer
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "customer_id")
-    //@JsonIgnore
+    @JoinColumn(name = "customeremail")
     private Customer customer;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "username")
+    @JsonIgnore
+    private User user;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Contract)) return false;
+        return id != null && id.equals(((Contract) o).id);
+    }
+    @Override
+    public int hashCode() {
+        return 32;
+    }
 
 }

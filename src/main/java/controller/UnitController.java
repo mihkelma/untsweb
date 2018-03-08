@@ -20,20 +20,9 @@ public class UnitController {
     @Resource
     private ContractDao contractDao;
 
-    //get all user units
-//    @GetMapping("units")
-//    @PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
-//    public User getAllUserUnits(Authentication auth) {
-//        //System.out.println(auth.getName());
-//        //TODO: is it ok to return user, which has user units as list? Or should I just return units (without user)?
-//        return unitDao.getAllUserUnits(auth.getName());
-//    }
-
     @GetMapping("units")
     @PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
-    public List<Unit> getAllUserUnits2(Authentication auth) {
-        //System.out.println(auth.getName());
-        //TODO: is it ok to return user, which has user units as list? Or should I just return units (without user)?
+    public List<Unit> getAllUserUnits(Authentication auth) {
         return unitDao.getAllActiveUserUnits(auth.getName());
     }
 
@@ -64,4 +53,3 @@ public class UnitController {
         return unitDao.getUnitContracts(id, auth.getName());
     }
 }
-//http://localhost:8080/api/units/1/contracts

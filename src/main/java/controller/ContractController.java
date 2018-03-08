@@ -2,6 +2,7 @@ package controller;
 
 import dao.ContractDao;
 import model.Contract;
+import model.Customer;
 import model.Invoice;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -24,11 +25,11 @@ public class ContractController {
         return contractDao.getUserContracts(auth.getName());
     }
 
-    @PostMapping("contracts")
+    @PostMapping("units/{id}/contracts")
     @PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
-    public void saveContract(@RequestBody @Valid Contract contract, Authentication auth) {
-        //System.out.println(auth.getName());
-        contractDao.saveContract(contract, auth.getName());
+    public void saveContract(@PathVariable Long id, @RequestBody @Valid Contract contract, Authentication auth) {
+        //System.out.println("Contr" +contract.getOwnerName() + ", "+contract.getCustomer());
+        contractDao.saveContract(contract, id, auth.getName());
     }
 
     @DeleteMapping("contracts/{id}")
@@ -39,7 +40,7 @@ public class ContractController {
     @GetMapping("contracts/{id}")
     @PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
     public Contract getContractById(@PathVariable Long id, Authentication auth) {
-        return contractDao.getContractWithOutInvoices(id, auth.getName());
+        return contractDao.getContractById(id, auth.getName());
     }
 
     @GetMapping("contracts/{id}/invoices")
