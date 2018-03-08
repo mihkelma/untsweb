@@ -26,7 +26,6 @@ public class InvoiceRow {
     @Transient
     private Double sumPrice;
     private Double taxAmount;
-    private String ownerRef;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "invoice_id")
@@ -36,4 +35,9 @@ public class InvoiceRow {
     public Double getSumPrice() {
         return quantity*unitPrice;
     }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "username")
+    @JsonIgnore
+    private User user;
 }
