@@ -1,6 +1,7 @@
 package controller;
 
 import dao.ContractDao;
+import dao.InvoiceDao;
 import model.Contract;
 import model.Customer;
 import model.Invoice;
@@ -13,10 +14,13 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class ContractController {
     //TODO: ContractController
     @Resource
     private ContractDao contractDao;
+    @Resource
+    private InvoiceDao invoiceDao;
 
     @GetMapping("contracts")
     @PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
@@ -46,6 +50,6 @@ public class ContractController {
     @GetMapping("contracts/{id}/invoices")
     @PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
     public List<Invoice> getContractInvoices(@PathVariable Long id, Authentication auth) {
-        return contractDao.getContractInvoices(id, auth.getName());
+        return invoiceDao.getContractInvoices(id, auth.getName());
     }
 }

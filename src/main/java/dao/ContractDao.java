@@ -12,5 +12,4 @@ public interface ContractDao {
     Contract getContractById(Long id, String username);
     void saveContract(Contract contract, Long id, String username);
     void deleteContract(Long id, String username);
-    List<Invoice> getContractInvoices(Long id, String username);
 }

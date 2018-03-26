@@ -1,0 +1,55 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div>
+  <div class="container">
+
+    <form class="form-signin" action="">
+      <h2 class="form-signin-heading">Please sign in</h2>
+      <label for="inputEmail" class="sr-only">Email address</label>
+      <input #inputEmail id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input #inputPassword type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" value="remember-me"> Remember me
+        </label>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" (click)="login(inputEmail.value, inputPassword.value)">Sign in</button>
+    </form>
+
+  </div> <!-- /container -->
+
+
+
+
+  <input #name/>
+  <input #pass/>
+  <button (click)="login(name.value, pass.value)">login</button>
+  <br><br>
+  <button (click)="logout()">logout</button>
+  <br><br>
+  <button (click)="getUnits()">Units</button>
+
+  <div *ngFor="let unit of units">
+    {{ unit }}
+  </div>
+  <div class="container">
+
+
+    <!--<form class="form-signin">-->
+      <!--<h2 class="form-signin-heading">Please sign in</h2>-->
+      <!--<label for="inputEmail" class="sr-only">Email address</label>-->
+      <!--<input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>-->
+      <!--<label for="inputPassword" class="sr-only">Password</label>-->
+      <!--<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>-->
+      <!--<div class="checkbox">-->
+        <!--<label>-->
+          <!--<input type="checkbox" value="remember-me"> Remember me-->
+        <!--</label>-->
+      <!--</div>-->
+      <!--<button class="btn btn-lg btn-primary btn-block" (click)="login(inputEmail.valueOf(), inputPassword.valueOf())">Sign in</button>-->
+    <!--</form>-->
+
+  </div> <!-- /container -->
+</div>
+
+

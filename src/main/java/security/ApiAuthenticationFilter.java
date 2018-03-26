@@ -39,7 +39,7 @@ public class ApiAuthenticationFilter extends AbstractAuthenticationProcessingFil
                 new UsernamePasswordAuthenticationToken(
                         loginCredentials.getUserName(),
                         loginCredentials.getPassword());
-        System.out.println(loginCredentials.getUserName());
+        System.out.println("Requesting auth:" +loginCredentials.getUserName() + ", "+ loginCredentials.getPassword());
 
         return this.getAuthenticationManager().authenticate(authRequest);
     }

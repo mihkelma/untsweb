@@ -81,8 +81,8 @@ public class InvoiceJpaDao implements InvoiceDao {
     public Invoice getInvoiceById(Long id, String username) {
         try {
             Invoice tmp;
-            tmp = em.createQuery("SELECT i FROM Invoice i LEFT JOIN FETCH i.invoices i " +
-                    "LEFT JOIN FETCH i.user u " +
+            tmp = em.createQuery("SELECT i FROM Invoice i " +
+                    "LEFT JOIN FETCH i.user u LEFT JOIN FETCH i.invoiceRows ir " +
                     "WHERE i.id = :id AND lower(i.user.username) = lower(:username)", Invoice.class)
                     .setParameter("id", id)
                     .setParameter("username", username)

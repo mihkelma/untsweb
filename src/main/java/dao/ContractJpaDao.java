@@ -83,8 +83,4 @@ public class ContractJpaDao implements ContractDao {
         em.merge(contract);
     }
 
-    @Override
-    public List<Invoice> getContractInvoices(Long id, String username) {
-        return null;
-    }
 }

@@ -23,13 +23,13 @@ public class InvoiceController {
         return invoiceDao.getUserInvoices(auth.getName());
     }
 
-    @PostMapping("invoices")
+    @PostMapping("contracts/{id}/invoices")
     @PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
-    public void saveInvoice(@RequestBody @Valid Invoice invoice, Authentication auth) {
-        invoiceDao.saveInvoice(invoice, auth.getName());
+    public void saveInvoice(@PathVariable Long id, @RequestBody @Valid Invoice invoice, Authentication auth) {
+        invoiceDao.saveInvoice(invoice, id, auth.getName());
     }
 
-    @PostMapping("invoices/{id}")
+    @DeleteMapping("invoices/{id}")
     @PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
     public void removeInvoice(@PathVariable Long id, Authentication auth) {
         invoiceDao.removeInvoice(id, auth.getName());
